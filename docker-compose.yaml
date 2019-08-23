@@ -15,6 +15,8 @@ services:
         published: 80
 
     client:
+      depends_on:
+      - user
       image: eyjafjalla/skyre-client:latest
       build:
         context: ./Skyre-FrontEnd
@@ -23,6 +25,8 @@ services:
       - "3000:3000"
 
     user:
+      depends_on:
+      - mysql
       image: eyjafjalla/skyre-user:latest
       build:
         context: ./Skyre_User
@@ -101,9 +105,13 @@ services:
       - "61616:61616"
 
     mysql:
-     depends_on:
-     - user
      image: mysql/mysql-server
+         restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: example
+       MYSQL_DATABASE: users
+       MYSQL_USER: test
+       MYSQL_PASSWORD: test1234
      ports:
      - "3306:3306"
 
